@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article to Video Creator | IncomeAIHub by M.Dev</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-primary:#0a0a0f;
+    --bg-secondary:#12121a;
+    --bg-card:#1a1a24;
+    --bg-card-hover:#20202c;
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.15);
+    --text-primary:#f0f0f5;
+    --text-secondary:#9999aa;
+    --text-dim:#666677;
+    --gold:#d4af6a;
+    --gold-dim:rgba(212,175,106,0.15);
+    --emerald:#3fb88a;
+    --emerald-dim:rgba(63,184,138,0.15);
+    --violet:#8b7cf6;
+    --violet-dim:rgba(139,124,246,0.15);
+    --danger:#e6607a;
+    --radius:14px;
+    --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-primary);
+    color:var(--text-primary);
+    font-family:'DM Sans',sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(139,124,246,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(63,184,138,0.08) 0%, transparent 40%);
+  }
+  h1,h2,h3,h4{font-family:'Syne',sans-serif;letter-spacing:-0.01em;}
+  .mono{font-family:'DM Mono',monospace;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-track{background:var(--bg-secondary);}
+  ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px;}
+
+  .wrap{max-width:1320px;margin:0 auto;padding:0 20px;}
+
+  /* HEADER */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,10,15,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .headbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:12px;flex-wrap:wrap;}
+  .logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;}
+  .logo span.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;box-shadow:0 0 12px var(--gold);}
+  .logo small{display:block;font-family:'DM Sans';font-weight:500;font-size:0.62rem;color:var(--text-dim);letter-spacing:0.04em;}
+  .head-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    padding:10px 18px;border-radius:10px;font-weight:600;font-size:0.85rem;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),#b8935a);color:#1a1206;box-shadow:0 4px 18px rgba(212,175,106,0.25);}
+  .btn-emerald{background:linear-gradient(135deg,var(--emerald),#2e9670);color:#04140d;box-shadow:0 4px 18px rgba(63,184,138,0.25);}
+  .btn-violet{background:linear-gradient(135deg,var(--violet),#6d5edb);color:#100a2e;box-shadow:0 4px 18px rgba(139,124,246,0.25);}
+  .btn-ghost{background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-strong);}
+  .btn-ghost:hover{background:var(--bg-card-hover);}
+  .btn:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+  .btn-sm{padding:7px 12px;font-size:0.75rem;border-radius:8px;}
+  .btn-block{width:100%;justify-content:center;}
+
+  .unlock-pill{
+    display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;
+    font-size:0.72rem;font-weight:600;background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,175,106,0.3);
+  }
+  .unlock-pill.is-pro{background:var(--emerald-dim);color:var(--emerald);border-color:rgba(63,184,138,0.3);}
+
+  /* HERO */
+  .hero{padding:48px 20px 24px;text-align:center;}
+  .hero .kicker{
+    display:inline-block;padding:6px 14px;border-radius:100px;background:var(--violet-dim);color:var(--violet);
+    font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px;border:1px solid rgba(139,124,246,0.25);
+  }
+  .hero h1{font-size:clamp(1.8rem,4.5vw,2.9rem);font-weight:800;margin-bottom:14px;line-height:1.15;}
+  .hero h1 .grad{background:linear-gradient(135deg,var(--gold),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p{color:var(--text-secondary);font-size:1rem;max-width:640px;margin:0 auto;}
+
+  /* LAYOUT */
+  .studio{display:grid;grid-template-columns:400px 1fr;gap:22px;padding:24px 20px 60px;align-items:start;}
+  @media (max-width:980px){.studio{grid-template-columns:1fr;}}
+
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+  .card + .card{margin-top:18px;}
+  .card h3{font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .card h3 .num{
+    width:22px;height:22px;border-radius:6px;background:var(--gold-dim);color:var(--gold);
+    display:inline-flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;
+  }
+
+  label{display:block;font-size:0.78rem;color:var(--text-secondary);margin-bottom:6px;font-weight:600;}
+  textarea,select,input[type=text],input[type=range]{
+    width:100%;background:var(--bg-secondary);border:1px solid var(--border-strong);color:var(--text-primary);
+    border-radius:var(--radius-sm);padding:11px 12px;font-family:inherit;font-size:0.88rem;
+  }
+  textarea{resize:vertical;min-height:150px;line-height:1.55;}
+  textarea:focus,select:focus,input:focus{outline:none;border-color:var(--gold);}
+  .field{margin-bottom:14px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .hint{font-size:0.72rem;color:var(--text-dim);margin-top:5px;}
+  .charcount{font-size:0.7rem;color:var(--text-dim);text-align:right;margin-top:4px;}
+
+  .range-row{display:flex;align-items:center;gap:10px;}
+  .range-row span{font-size:0.78rem;color:var(--gold);font-weight:700;min-width:52px;text-align:right;font-family:'DM Mono',monospace;}
+
+  .theme-swatches{display:flex;gap:8px;}
+  .swatch{
+    flex:1;height:42px;border-radius:8px;cursor:pointer;border:2px solid transparent;
+    display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;color:#fff;
+    transition:border-color .15s;
+  }
+  .swatch.active{border-color:#fff;}
+  .swatch.gold{background:linear-gradient(135deg,#d4af6a,#8a6a2f);}
+  .swatch.emerald{background:linear-gradient(135deg,#3fb88a,#1f6b4d);}
+  .swatch.violet{background:linear-gradient(135deg,#8b7cf6,#4a3aa8);}
+  .swatch.mixed{background:linear-gradient(135deg,#d4af6a,#3fb88a,#8b7cf6);}
+
+  /* PREVIEW */
+  .preview-shell{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .canvas-wrap{
+    position:relative;width:100%;max-width:520px;background:#000;border-radius:var(--radius);
+    overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  }
+  .canvas-wrap.ratio-916{max-width:320px;}
+  #videoCanvas{width:100%;display:block;background:#000;}
+  .empty-state{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;color:var(--text-dim);padding:20px;text-align:center;
+  }
+  .empty-state .icon{font-size:2.4rem;opacity:0.5;}
+
+  .transport{display:flex;align-items:center;gap:10px;width:100%;max-width:520px;}
+  .progress-track{flex:1;height:6px;background:var(--bg-secondary);border-radius:100px;overflow:hidden;border:1px solid var(--border);}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--violet));width:0%;transition:width .1s linear;}
+  .transport .timelabel{font-size:0.72rem;color:var(--text-dim);font-family:'DM Mono',monospace;min-width:40px;}
+
+  .scene-strip{display:flex;gap:8px;overflow-x:auto;width:100%;max-width:520px;padding-bottom:4px;}
+  .scene-thumb{
+    flex:0 0 auto;width:64px;height:44px;border-radius:6px;border:2px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;color:var(--text-dim);
+    cursor:pointer;background:var(--bg-secondary);
+  }
+  .scene-thumb.active{border-color:var(--gold);color:var(--gold);}
+
+  /* SCENE LIST */
+  .scene-list{display:flex;flex-direction:column;gap:12px;}
+  .scene-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;}
+  .scene-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
+  .scene-badge{
+    width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    font-size:0.75rem;font-weight:800;color:#fff;flex:0 0 auto;
+  }
+  .scene-meta{font-size:0.7rem;color:var(--text-dim);font-family:'DM Mono',monospace;flex:1;}
+  .scene-tools{display:flex;gap:6px;}
+  .icon-btn{
+    width:28px;height:28px;border-radius:6px;background:var(--bg-card);border:1px solid var(--border-strong);
+    color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:0.8rem;
+  }
+  .icon-btn:hover{color:var(--gold);border-color:var(--gold);}
+  .scene-card textarea{min-height:56px;font-size:0.84rem;}
+  .scene-tag{
+    display:inline-flex;margin-top:8px;padding:3px 9px;border-radius:100px;font-size:0.68rem;font-weight:600;
+    background:var(--violet-dim);color:var(--violet);
+  }
+
+  .locked-overlay{
+    position:relative;padding:24px;text-align:center;border-radius:var(--radius-sm);
+    background:repeating-linear-gradient(135deg,rgba(212,175,106,0.05),rgba(212,175,106,0.05) 10px,rgba(212,175,106,0.09) 10px,rgba(212,175,106,0.09) 20px);
+    border:1px dashed rgba(212,175,106,0.4);
+  }
+  .locked-overlay .lock-icon{font-size:1.6rem;margin-bottom:8px;}
+  .locked-overlay p{font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;}
+
+  .export-row{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+
+  .status-line{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--text-secondary);margin-top:10px;}
+  .spinner{
+    width:14px;height:14px;border-radius:50%;border:2px solid var(--border-strong);border-top-color:var(--gold);
+    animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* MODALS */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(5,5,8,0.75);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;z-index:200;padding:20px;
+  }
+  .modal-backdrop.show{display:flex;}
+  .modal{
+    background:var(--bg-card);border:1px solid var(--border-strong);border-radius:var(--radius);
+    max-width:560px;width:100%;max-height:85vh;overflow-y:auto;padding:26px;
+  }
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .modal h2{font-size:1.3rem;}
+  .modal .close-x{width:32px;height:32px;border-radius:8px;background:var(--bg-secondary);color:var(--text-secondary);font-size:1rem;}
+  .modal .close-x:hover{color:var(--danger);}
+  .guide-body{font-size:0.9rem;color:var(--text-secondary);line-height:1.75;}
+  .guide-body h4{color:var(--gold);font-size:0.95rem;margin:16px 0 6px;}
+  .guide-body ul{margin-left:20px;margin-bottom:8px;}
+  .guide-body li{margin-bottom:4px;}
+  .guide-body p{margin-bottom:8px;}
+
+  .price-box{
+    display:flex;align-items:baseline;gap:10px;justify-content:center;padding:18px;
+    background:var(--gold-dim);border-radius:var(--radius-sm);margin:16px 0;border:1px solid rgba(212,175,106,0.3);
+  }
+  .price-box .amt{font-family:'Syne';font-size:2rem;font-weight:800;color:var(--gold);}
+  .price-box .strike{text-decoration:line-through;color:var(--text-dim);font-size:0.9rem;}
+  .feature-check{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:0.86rem;}
+  .feature-check .tick{color:var(--emerald);flex:0 0 auto;}
+
+  footer{border-top:1px solid var(--border);padding:26px 20px;text-align:center;color:var(--text-dim);font-size:0.78rem;}
+  footer .brand{color:var(--gold);font-weight:700;}
+
+  .ad-slot{
+    border:1px dashed var(--border-strong);border-radius:var(--radius-sm);padding:14px;text-align:center;
+    color:var(--text-dim);font-size:0.72rem;margin:18px 0;background:var(--bg-secondary);
+  }
+
+  .toast-wrap{position:fixed;bottom:20px;right:20px;z-index:300;display:flex;flex-direction:column;gap:10px;}
+  .toast{
+    background:var(--bg-card);border:1px solid var(--border-strong);border-left:3px solid var(--emerald);
+    padding:12px 16px;border-radius:8px;font-size:0.82rem;box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    animation:slideIn .25s ease; max-width:300px;
+  }
+  .toast.err{border-left-color:var(--danger);}
+  @keyframes slideIn{from{transform:translateX(30px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+
+  @media(max-width:560px){
+    .row2{grid-template-columns:1fr;}
+    .hero{padding:32px 16px 16px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="headbar">
+    <div class="logo">
+      <span class="dot"></span>
+      <div>
+        Article to Video
+        <small>IncomeAIHub by M.Dev</small>
+      </div>
+    </div>
+    <div class="head-actions">
+      <span id="unlockPill" class="unlock-pill">🔒 Free Plan</span>
+      <button class="btn btn-ghost btn-sm" id="btnHindiGuide">🇮🇳 हिंदी गाइड</button>
+      <button class="btn btn-gold btn-sm" id="btnUnlockTop">Unlock Full Version</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="kicker">AI Video Script + Auto Scene Builder</span>
+  <h1>Turn Any <span class="grad">Article Into a Video</span> in Minutes</h1>
+  <p>Paste your blog post, news article, or Hindi/English write-up. Get an auto-generated video script broken into scenes with visuals, captions, voice narration preview, and a downloadable video — perfect for Reels, Shorts & YouTube.</p>
+</section>
+
+<div class="wrap">
+<div class="studio">
+
+  <!-- LEFT: INPUT PANEL -->
+  <div>
+    <div class="card">
+      <h3><span class="num">1</span> Paste Your Article</h3>
+      <div class="field">
+        <textarea id="articleInput" placeholder="Paste your full article, blog post, or news content here (English or Hindi)... e.g. 'Chhattisgarh's MSME sector is growing rapidly, with over 50,000 registered units contributing to local employment...'"></textarea>
+        <div class="charcount"><span id="charCount">0</span> characters · <span id="wordCount">0</span> words</div>
+      </div>
+      <div class="field">
+        <label>Target Video Length</label>
+        <select id="targetLength">
+          <option value="short">Short (30–45 sec) — Reels / Shorts</option>
+          <option value="medium" selected>Medium (60–90 sec) — Instagram / YouTube</option>
+          <option value="long">Long (2–3 min) — Detailed Explainer</option>
+        </select>
+      </div>
+      <button class="btn btn-gold btn-block" id="btnGenerate">✨ Generate Video Script &amp; Scenes</button>
+      <div class="status-line" id="genStatus" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span> Video Settings</h3>
+      <div class="field">
+        <label>Aspect Ratio</label>
+        <select id="aspectRatio">
+          <option value="916" selected>9:16 — Reels / Shorts / Status</option>
+          <option value="169">16:9 — YouTube / Landscape</option>
+          <option value="11">1:1 — Instagram Feed / Square</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Visual Theme</label>
+        <div class="theme-swatches">
+          <div class="swatch gold active" data-theme="gold">Gold</div>
+          <div class="swatch emerald" data-theme="emerald">Emerald</div>
+          <div class="swatch violet" data-theme="violet">Violet</div>
+          <div class="swatch mixed" data-theme="mixed">Mixed</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Narration Voice (Browser TTS)</label>
+        <select id="voiceSelect"><option>Loading voices...</option></select>
+      </div>
+      <div class="field">
+        <label>Narration Speed</label>
+        <div class="range-row">
+          <input type="range" id="rateSlider" min="0.7" max="1.3" step="0.05" value="1">
+          <span id="rateVal">1.00x</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-slot">Ad Space — 336x120 (Replace with your AdSense unit)</div>
+  </div>
+
+  <!-- RIGHT: PREVIEW + SCENES -->
+  <div>
+    <div class="card">
+      <h3><span class="num">3</span> Preview</h3>
+      <div class="preview-shell">
+        <div class="canvas-wrap ratio-916" id="canvasWrap">
+          <canvas id="videoCanvas" width="720" height="1280"></canvas>
+          <div class="empty-state" id="emptyState">
+            <div class="icon">🎬</div>
+            <div>Paste an article and click <b>Generate</b> to build your video</div>
+          </div>
+        </div>
+        <div class="transport">
+          <span class="timelabel" id="timeCurrent">0:00</span>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <span class="timelabel" id="timeTotal">0:00</span>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-ghost btn-sm" id="btnPlay" disabled>▶ Play Preview</button>
+          <button class="btn btn-ghost btn-sm" id="btnPause" disabled>⏸ Pause</button>
+          <button class="btn btn-ghost btn-sm" id="btnStop" disabled>⏹ Stop</button>
+        </div>
+        <div class="scene-strip" id="sceneStrip"></div>
+      </div>
+
+      <div class="export-row">
+        <button class="btn btn-emerald btn-block" id="btnExport" disabled>⬇ Export Video (.webm)</button>
+        <button class="btn btn-ghost btn-block" id="btnSrt" disabled>📝 Download Captions (.srt)</button>
+        <button class="btn btn-ghost btn-block" id="btnScriptTxt" disabled>📄 Download Script (.txt)</button>
+      </div>
+      <p class="hint" style="margin-top:10px;">Note: Exported video includes burned-in captions + visuals. Browser voice narration is silent in the export file (browser security limitation) — play it live during Preview, or add voiceover using your <b>AI Voice Generator</b> + <b>Auto Video Editor</b> tools for a fully narrated final cut.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span> Scene-by-Scene Script <span class="mono" id="sceneCountLabel" style="color:var(--text-dim);font-weight:400;font-size:0.75rem;"></span></h3>
+      <div class="scene-list" id="sceneList">
+        <p class="hint">Your generated scenes will appear here — fully editable.</p>
+      </div>
+      <div id="lockedScenesNote" style="display:none;" class="locked-overlay">
+        <div class="lock-icon">🔒</div>
+        <p>Free plan shows first 3 scenes only. Unlock full version to edit &amp; export all scenes without watermark.</p>
+        <button class="btn btn-gold btn-sm" id="btnUnlockInline">Unlock Full Version — ₹499 Lifetime</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <p><span class="brand">IncomeAIHub</span> by M.Dev &middot; AI tools for Indian freelancers, CA firms &amp; MSMEs</p>
+  <p style="margin-top:6px;">Article to Video Creator — client-side script &amp; scene generator. No article data is stored on our servers.</p>
+</footer>
+
+<!-- HINDI GUIDE MODAL -->
+<div class="modal-backdrop" id="guideModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>📘 इस्तेमाल कैसे करें (Hindi Guide)</h2>
+      <button class="close-x" data-close="guideModal">✕</button>
+    </div>
+    <div class="guide-body">
+      <p><b>Article to Video Creator</b> से आप किसी भी आर्टिकल, ब्लॉग या न्यूज़ को कुछ ही मिनटों में शॉर्ट वीडियो स्क्रिप्ट + विज़ुअल सीन में बदल सकते हैं।</p>
+
+      <h4>इस्तेमाल करने का तरीका</h4>
+      <ul>
+        <li>अपना आर्टिकल टेक्स्ट बॉक्स में पेस्ट करें (Hindi या English दोनों चलेगा)।</li>
+        <li>वीडियो की लंबाई (Short/Medium/Long) और Aspect Ratio चुनें — Reels के लिए 9:16 रखें।</li>
+        <li>"Generate Video Script & Scenes" पर क्लिक करें — टूल आर्टिकल को सीन्स में तोड़ देगा।</li>
+        <li>हर सीन की टेक्स्ट को एडिट कर सकते हैं, "Play Preview" से आवाज़ के साथ देख सकते हैं।</li>
+        <li>"Export Video" से .webm वीडियो डाउनलोड करें, और ".srt" कैप्शन फाइल भी डाउनलोड करें जिसे आप CapCut/Auto Video Editor में इस्तेमाल कर सकती हैं।</li>
+      </ul>
+
+      <h4>फ्रीलांसिंग में कैसे कमाएं इस टूल से</h4>
+      <ul>
+        <li><b>CA Firms / MSMEs के लिए:</b> उनके GST अपडेट, टैक्स डेडलाइन या स्कीम के आर्टिकल को 30-सेकंड के Reels में बदलकर सोशल मीडिया पर पोस्ट करें — ₹1500–3000/महीना रिटेनर चार्ज करें।</li>
+        <li><b>Content Agencies को सेवा दें:</b> क्लाइंट के ब्लॉग पोस्ट को वीडियो में बदलने की सर्विस दें — प्रति वीडियो ₹300–800 चार्ज करें।</li>
+        <li><b>News/Local Business पेज चलाने वालों के लिए:</b> रोज़ाना की न्यूज़ को शॉर्ट वीडियो में बदलकर Instagram/YouTube Shorts पर अपलोड करने में मदद करें।</li>
+        <li><b>खुद का Faceless YouTube/Reels चैनल:</b> ट्रेंडिंग आर्टिकल्स को वीडियो में बदलकर खुद की चैनल ग्रो करें — AdSense/Sponsorship से कमाएं।</li>
+      </ul>
+
+      <h4>क्लाइंट को कैसे पिच करें</h4>
+      <p>Raipur के छोटे बिज़नेस और CA दफ्तरों में जाकर बताएं: "मैं आपके हर आर्टिकल/अपडेट को 60 सेकंड के वीडियो में बदल सकती हूं, जिससे आपके क्लाइंट्स सोशल मीडिया पर ज़्यादा देखेंगे।" पहला वीडियो फ्री बनाकर दिखाएं (Demo Mode से) — फिर मंथली पैकेज ऑफर करें।</p>
+
+      <h4>प्रो टिप</h4>
+      <p>बेहतर नैरेशन के लिए, इस टूल से बना Script/SRT अपने <b>AI Voice Generator</b> और <b>Auto Video Editor</b> टूल में डालें — प्रोफेशनल दिखने वाला फुल-वॉइस वीडियो कुछ ही मिनटों में तैयार हो जाएगा।</p>
+    </div>
+  </div>
+</div>
+
+<!-- UNLOCK / PRICING MODAL -->
+<div class="modal-backdrop" id="unlockModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>🔓 Unlock Full Version</h2>
+      <button class="close-x" data-close="unlockModal">✕</button>
+    </div>
+    <div class="price-box">
+      <span class="strike">₹1499</span>
+      <span class="amt">₹499</span>
+      <span style="color:var(--text-secondary);font-size:0.85rem;">/ lifetime</span>
+    </div>
+    <div class="feature-check"><span class="tick">✔</span> Unlimited scenes per article (no 3-scene cap)</div>
+    <div class="feature-check"><span class="tick">✔</span> No watermark on exported videos</div>
+    <div class="feature-check"><span class="tick">✔</span> All aspect ratios &amp; themes unlocked</div>
+    <div class="feature-check"><span class="tick">✔</span> Unlimited exports, forever — one-time payment</div>
+    <div class="feature-check"><span class="tick">✔</span> Priority AI script generation (when connected)</div>
+    <button class="btn btn-gold btn-block" id="btnPay" style="margin-top:14px;">Pay ₹499 with Razorpay — Unlock Lifetime</button>
+    <p class="hint" id="demoNote" style="text-align:center;margin-top:10px;">Running in Demo Mode — connect Supabase &amp; Razorpay keys in CONFIG to enable real payments.</p>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ======================= CONFIG ======================= */
+  const CONFIG = {
+    SUPABASE_URL: "YOUR_SUPABASE_URL",           // e.g. https://xxxx.supabase.co
+    SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
+    RAZORPAY_KEY_ID: "YOUR_RAZORPAY_KEY_ID",
+    TOOL_ID: "article-to-video-creator",
+    PRICE_INR: 499,
+    FREE_SCENE_LIMIT: 3
+  };
+  const DEMO_MODE = CONFIG.SUPABASE_URL.indexOf("YOUR_") === 0 || CONFIG.RAZORPAY_KEY_ID.indexOf("YOUR_") === 0;
+
+  /* ======================= STATE ======================= */
+  const state = {
+    scenes: [],
+    theme: "gold",
+    aspect: "916",
+    isUnlocked: false,
+    isPlaying: false,
+    currentSceneIdx: 0,
+    sceneStartTime: 0,
+    rafId: null,
+    voices: [],
+    deviceId: null,
+    recorder: null,
+    recordedChunks: []
+  };
+
+  const THEME_COLORS = {
+    gold:    { a:"#d4af6a", b:"#3a2a10", accent:"#d4af6a" },
+    emerald: { a:"#3fb88a", b:"#0d2a20", accent:"#3fb88a" },
+    violet:  { a:"#8b7cf6", b:"#1a1240", accent:"#8b7cf6" },
+    mixed:   null
+  };
+  const MIXED_CYCLE = ["gold","emerald","violet"];
+
+  const ASPECTS = { "916":{w:720,h:1280}, "169":{w:1280,h:720}, "11":{w:1080,h:1080} };
+
+  const STOPWORDS = new Set(["the","and","that","this","with","from","have","has","are","was","were","for","not","but","you","your","about","into","their","them","they","will","would","could","also","its","his","her","him","she","he","a","an","of","in","on","to","is","it","as","at","by","or","be","भी","और","है","के","का","की","को","एक","हैं","से","में","पर"]);
+
+  /* ======================= UTIL ======================= */
+  function $(id){ return document.getElementById(id); }
+  function toast(msg, isErr){
+    const t = document.createElement("div");
+    t.className = "toast" + (isErr ? " err" : "");
+    t.textContent = msg;
+    $("toastWrap").appendChild(t);
+    setTimeout(()=>{ t.remove(); }, 4000);
+  }
+  function getDeviceId(){
+    let id = localStorage.getItem("a2v_device_id");
+    if(!id){
+      id = (crypto.randomUUID ? crypto.randomUUID() : "dev-" + Date.now() + "-" + Math.random().toString(36).slice(2));
+      localStorage.setItem("a2v_device_id", id);
+    }
+    return id;
+  }
+  function fmtTime(sec){
+    sec = Math.max(0, Math.round(sec));
+    const m = Math.floor(sec/60), s = sec%60;
+    return m + ":" + String(s).padStart(2,"0");
+  }
+  function hexToRgba(hex, alpha){
+    const h = hex.replace("#","");
+    const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  /* ======================= UNLOCK STATUS ======================= */
+  function setUnlockedUI(unlocked){
+    state.isUnlocked = unlocked;
+    const pill = $("unlockPill");
+    if(unlocked){
+      pill.textContent = "✨ Full Version";
+      pill.classList.add("is-pro");
+    } else {
+      pill.textContent = "🔒 Free Plan";
+      pill.classList.remove("is-pro");
+    }
+    renderScenesList();
+  }
+
+  async function checkUnlockStatus(){
+    const cached = localStorage.getItem("a2v_unlocked_" + CONFIG.TOOL_ID);
+    if(cached === "true"){ setUnlockedUI(true); }
+
+    if(DEMO_MODE) return; // no backend configured
+
+    try{
+      const res = await fetch(CONFIG.SUPABASE_URL + "/functions/v1/check-unlock", {
+        method: "POST",
+        headers: { "Content-Type":"application/json", "Authorization":"Bearer " + CONFIG.SUPABASE_ANON_KEY },
+        body: JSON.stringify({ device_id: state.deviceId, tool_id: CONFIG.TOOL_ID })
+      });
+      const data = await res.json();
+      if(data && data.unlocked){
+        localStorage.setItem("a2v_unlocked_" + CONFIG.TOOL_ID, "true");
+        setUnlockedUI(true);
+      }
+    }catch(e){ /* fail silently, keep cached/local state */ }
+  }
+
+  /* ======================= PAYMENT FLOW ======================= */
+  async function startPayment(){
+    if(DEMO_MODE){
+      toast("Demo Mode: Connect Supabase + Razorpay keys in CONFIG to enable real payments.", true);
+      return;
+    }
+    try{
+      const orderRes = await fetch(CONFIG.SUPABASE_URL + "/functions/v1/create-order", {
+        method: "POST",
+        headers: { "Content-Type":"application/json", "Authorization":"Bearer " + CONFIG.SUPABASE_ANON_KEY },
+        body: JSON.stringify({ device_id: state.deviceId, tool_id: CONFIG.TOOL_ID, amount: CONFIG.PRICE_INR })
+      });
+      const order = await orderRes.json();
+
+      const rzp = new Razorpay({
+        key: CONFIG.RAZORPAY_KEY_ID,
+        amount: CONFIG.PRICE_INR * 100,
+        currency: "INR",
+        name: "IncomeAIHub",
+        description: "Article to Video Creator — Lifetime Unlock",
+        order_id: order.id,
+        handler: async function(response){
+          try{
+            const verifyRes = await fetch(CONFIG.SUPABASE_URL + "/functions/v1/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type":"application/json", "Authorization":"Bearer " + CONFIG.SUPABASE_ANON_KEY },
+              body: JSON.stringify({
+                device_id: state.deviceId, tool_id: CONFIG.TOOL_ID,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+            const verify = await verifyRes.json();
+            if(verify && verify.success){
+              localStorage.setItem("a2v_unlocked_" + CONFIG.TOOL_ID, "true");
+              setUnlockedUI(true);
+              closeModal("unlockModal");
+              toast("Payment successful! Full version unlocked. 🎉");
+            } else {
+              toast("Payment verification failed. Please contact support.", true);
+            }
+          }catch(e){ toast("Verification error. Please contact support.", true); }
+        },
+        theme: { color: "#d4af6a" }
+      });
+      rzp.open();
+    }catch(e){
+      toast("Could not start payment. Please try again.", true);
+    }
+  }
+
+  /* ======================= ARTICLE -> SCRIPT ENGINE ======================= */
+  function splitSentences(text){
+    return text
+      .replace(/\s+/g, " ")
+      .split(/(?<=[.?!।])\s+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 3);
+  }
+
+  function extractKeyword(chunkText){
+    const words = chunkText.replace(/[^\w\sऀ-ॿ]/g, "").split(/\s+/);
+    let best = "", bestScore = -1;
+    words.forEach(w=>{
+      const lw = w.toLowerCase();
+      if(w.length < 4 || STOPWORDS.has(lw)) return;
+      const score = w.length + (/^[A-Z]/.test(w) ? 3 : 0);
+      if(score > bestScore){ bestScore = score; best = w; }
+    });
+    return best || "Highlight";
+  }
+
+  function wordsPerSceneForLength(target){
+    if(target === "short") return { min: 30, max: 45, maxScenes: 8 };
+    if(target === "long") return { min: 45, max: 70, maxScenes: 22 };
+    return { min: 35, max: 55, maxScenes: 14 }; // medium
+  }
+
+  function generateScenesFromArticle(text, target){
+    const sentences = splitSentences(text);
+    if(sentences.length === 0) return [];
+
+    const cfg = wordsPerSceneForLength(target);
+    const scenes = [];
+    let chunk = [];
+    let chunkWordCount = 0;
+
+    sentences.forEach(sentence=>{
+      const wc = sentence.split(/\s+/).length;
+      chunk.push(sentence);
+      chunkWordCount += wc;
+      if(chunkWordCount >= cfg.min){
+        scenes.push(chunk.join(" "));
+        chunk = [];
+        chunkWordCount = 0;
+      }
+    });
+    if(chunk.length){
+      if(scenes.length && chunkWordCount < 15){
+        scenes[scenes.length-1] += " " + chunk.join(" ");
+      } else {
+        scenes.push(chunk.join(" "));
+      }
+    }
+
+    const capped = scenes.slice(0, cfg.maxScenes);
+
+    return capped.map((sceneText, i)=>{
+      const wc = sceneText.split(/\s+/).length;
+      const duration = Math.min(12, Math.max(3, Math.round(wc / 2.3)));
+      const themeKey = state.theme === "mixed" ? MIXED_CYCLE[i % MIXED_CYCLE.length] : state.theme;
+      return {
+        id: i,
+        narration: sceneText,
+        keyword: extractKeyword(sceneText),
+        duration: duration,
+        theme: themeKey
+      };
+    });
+  }
+
+  /* ======================= RENDER SCENE LIST (UI) ======================= */
+  function renderScenesList(){
+    const list = $("sceneList");
+    const lockedNote = $("lockedScenesNote");
+    if(state.scenes.length === 0){
+      list.innerHTML = '<p class="hint">Your generated scenes will appear here — fully editable.</p>';
+      lockedNote.style.display = "none";
+      $("sceneCountLabel").textContent = "";
+      return;
+    }
+
+    const visibleCount = state.isUnlocked ? state.scenes.length : Math.min(state.scenes.length, CONFIG.FREE_SCENE_LIMIT);
+    $("sceneCountLabel").textContent = "(" + state.scenes.length + " scenes, " + fmtTime(totalDuration()) + " total)";
+
+    list.innerHTML = "";
+    state.scenes.slice(0, visibleCount).forEach((scene, i)=>{
+      const c = THEME_COLORS[scene.theme] || THEME_COLORS.gold;
+      const card = document.createElement("div");
+      card.className = "scene-card";
+      card.innerHTML =
+        '<div class="scene-card-head">' +
+          '<div class="scene-badge" style="background:' + c.a + '">' + (i+1) + '</div>' +
+          '<div class="scene-meta">~' + scene.duration + 's · ' + scene.narration.split(/\s+/).length + ' words</div>' +
+          '<div class="scene-tools">' +
+            '<button class="icon-btn" data-action="regen" data-idx="' + i + '" title="Change visual theme">🎨</button>' +
+            '<button class="icon-btn" data-action="preview1" data-idx="' + i + '" title="Preview this scene">▶</button>' +
+          '</div>' +
+        '</div>' +
+        '<textarea data-scene-idx="' + i + '">' + scene.narration + '</textarea>' +
+        '<span class="scene-tag">🖼 ' + scene.keyword + '</span>';
+      list.appendChild(card);
+    });
+
+    lockedNote.style.display = (!state.isUnlocked && state.scenes.length > CONFIG.FREE_SCENE_LIMIT) ? "block" : "none";
+
+    list.querySelectorAll("textarea[data-scene-idx]").forEach(ta=>{
+      ta.addEventListener("blur", (e)=>{
+        const idx = parseInt(e.target.getAttribute("data-scene-idx"), 10);
+        const text = e.target.value.trim();
+        if(text.length < 3) return;
+        state.scenes[idx].narration = text;
+        const wc = text.split(/\s+/).length;
+        state.scenes[idx].duration = Math.min(12, Math.max(3, Math.round(wc / 2.3)));
+        state.scenes[idx].keyword = extractKeyword(text);
+        buildSceneStrip();
+        renderScenesList();
+      });
+    });
+    list.querySelectorAll('[data-action="regen"]').forEach(btn=>{
+      btn.addEventListener("click", (e)=>{
+        const idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
+        const options = ["gold","emerald","violet"];
+        const cur = state.scenes[idx].theme;
+        const next = options[(options.indexOf(cur)+1) % options.length];
+        state.scenes[idx].theme = next;
+        renderScenesList();
+        toast("Scene " + (idx+1) + " visual updated");
+      });
+    });
+    list.querySelectorAll('[data-action="preview1"]').forEach(btn=>{
+      btn.addEventListener("click", (e)=>{
+        const idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
+        playFromScene(idx, true);
+      });
+    });
+  }
+
+  function buildSceneStrip(){
+    const strip = $("sceneStrip");
+    strip.innerHTML = "";
+    state.scenes.forEach((scene,i)=>{
+      const el = document.createElement("div");
+      el.className = "scene-thumb" + (i===state.currentSceneIdx ? " active" : "");
+      el.textContent = "S" + (i+1);
+      el.addEventListener("click", ()=> playFromScene(i, false));
+      strip.appendChild(el);
+    });
+  }
+
+  function totalDuration(){
+    return state.scenes.reduce((sum,s)=> sum + s.duration, 0);
+  }
+
+  /* ======================= CANVAS RENDERING ======================= */
+  const canvas = $("videoCanvas");
+  const ctx = canvas.getContext("2d");
+
+  function setCanvasSize(){
+    const dims = ASPECTS[state.aspect];
+    canvas.width = dims.w;
+    canvas.height = dims.h;
+    $("canvasWrap").classList.toggle("ratio-916", state.aspect === "916");
+  }
+
+  function wrapText(context, text, maxWidth){
+    const words = text.split(" ");
+    const lines = [];
+    let line = "";
+    words.forEach(word=>{
+      const test = line ? line + " " + word : word;
+      if(context.measureText(test).width > maxWidth && line){
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  function drawScene(scene, progress, watermark){
+    const w = canvas.width, h = canvas.height;
+    const c = THEME_COLORS[scene.theme] || THEME_COLORS.gold;
+
+    // Ken Burns background gradient
+    const zoom = 1 + progress * 0.06;
+    const cx = w/2 + Math.sin(progress * Math.PI) * 20;
+    const cy = h/2 + Math.cos(progress * Math.PI) * 20;
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, (Math.max(w,h)/1.1) * zoom);
+    grad.addColorStop(0, c.a);
+    grad.addColorStop(1, c.b);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,w,h);
+
+    // decorative floating circles
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    for(let i=0;i<4;i++){
+      const rr = (w*0.15) + i*30;
+      const ox = (w*0.2)*i + (progress*40*(i%2===0?1:-1));
+      const oy = (h*0.15)*(i+1) + Math.sin(progress*6+i)*20;
+      ctx.beginPath();
+      ctx.arc(ox % w, oy % h, rr*0.25, 0, Math.PI*2);
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // vignette
+    const vgrad = ctx.createRadialGradient(w/2,h/2,h*0.2,w/2,h/2,h*0.75);
+    vgrad.addColorStop(0,"rgba(0,0,0,0)");
+    vgrad.addColorStop(1,"rgba(0,0,0,0.55)");
+    ctx.fillStyle = vgrad;
+    ctx.fillRect(0,0,w,h);
+
+    // keyword tag top
+    ctx.font = "600 " + Math.round(w*0.032) + "px 'DM Sans', sans-serif";
+    ctx.fillStyle = hexToRgba("#ffffff", 0.85);
+    ctx.textAlign = "center";
+    const tagY = h*0.12;
+    const tagText = "🖼 " + scene.keyword.toUpperCase();
+    const tagWidth = ctx.measureText(tagText).width + 40;
+    ctx.fillStyle = hexToRgba("#000000", 0.35);
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(w/2 - tagWidth/2, tagY-28, tagWidth, 42, 20) : ctx.rect(w/2-tagWidth/2, tagY-28, tagWidth, 42);
+    ctx.fill();
+    ctx.fillStyle = c.accent;
+    ctx.fillText(tagText, w/2, tagY);
+
+    // caption fade
+    let alpha = 1;
+    if(progress < 0.15) alpha = progress/0.15;
+    else if(progress > 0.85) alpha = (1-progress)/0.15;
+
+    ctx.font = "700 " + Math.round(w*0.058) + "px 'Syne', sans-serif";
+    ctx.fillStyle = hexToRgba("#ffffff", alpha);
+    ctx.textAlign = "center";
+    const maxWidth = w * 0.84;
+    const lines = wrapText(ctx, scene.narration, maxWidth);
+    const lineHeight = w*0.075;
+    const startY = h*0.62 - (lines.length-1)*lineHeight/2;
+    lines.forEach((ln,i)=>{
+      ctx.fillText(ln, w/2, startY + i*lineHeight);
+    });
+
+    // scene number / progress footer
+    ctx.font = "500 " + Math.round(w*0.028) + "px 'DM Mono', monospace";
+    ctx.fillStyle = hexToRgba("#ffffff", 0.55);
+    ctx.fillText("SCENE " + (scene.id+1) + " / " + state.scenes.length, w/2, h*0.93);
+
+    // brand mark
+    ctx.font = "600 " + Math.round(w*0.024) + "px 'Syne', sans-serif";
+    ctx.fillStyle = hexToRgba("#ffffff", 0.4);
+    ctx.textAlign = "right";
+    ctx.fillText("IncomeAIHub", w*0.94, h*0.05);
+    ctx.textAlign = "center";
+
+    if(watermark){
+      ctx.save();
+      ctx.translate(w/2, h/2);
+      ctx.rotate(-0.4);
+      ctx.font = "800 " + Math.round(w*0.06) + "px 'Syne', sans-serif";
+      ctx.fillStyle = "rgba(255,255,255,0.14)";
+      ctx.textAlign = "center";
+      for(let i=-2;i<=2;i++){
+        ctx.fillText("INCOMEAIHUB.COM — FREE", 0, i*h*0.18);
+      }
+      ctx.restore();
+    }
+  }
+
+  function renderEmptyCanvas(){
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
+
+  /* ======================= PLAYBACK ======================= */
+  function stopSpeaking(){
+    if(window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+
+  function speakScene(scene){
+    if(!("speechSynthesis" in window)) return;
+    stopSpeaking();
+    const utter = new SpeechSynthesisUtterance(scene.narration);
+    const voiceName = $("voiceSelect").value;
+    const voice = state.voices.find(v => v.name === voiceName);
+    if(voice) utter.voice = voice;
+    utter.rate = parseFloat($("rateSlider").value);
+    window.speechSynthesis.speak(utter);
+  }
+
+  function playFromScene(idx, singleSceneOnly){
+    if(state.scenes.length === 0) return;
+    state.currentSceneIdx = idx;
+    state.sceneStartTime = performance.now();
+    state.isPlaying = true;
+    state._singleSceneOnly = !!singleSceneOnly;
+    $("btnPlay").disabled = true;
+    $("btnPause").disabled = false;
+    $("btnStop").disabled = false;
+    speakScene(state.scenes[idx]);
+    buildSceneStrip();
+    if(state.rafId) cancelAnimationFrame(state.rafId);
+    animateLoop();
+  }
+
+  function pausePlayback(){
+    state.isPlaying = false;
+    stopSpeaking();
+    $("btnPlay").disabled = false;
+    $("btnPause").disabled = true;
+    if(state.rafId) cancelAnimationFrame(state.rafId);
+  }
+
+  function stopPlayback(){
+    pausePlayback();
+    state.currentSceneIdx = 0;
+    $("btnStop").disabled = true;
+    $("progressFill").style.width = "0%";
+    $("timeCurrent").textContent = "0:00";
+    if(state.scenes.length) drawScene(state.scenes[0], 0, !state.isUnlocked);
+    buildSceneStrip();
+  }
+
+  function animateLoop(){
+    if(!state.isPlaying) return;
+    const scene = state.scenes[state.currentSceneIdx];
+    if(!scene){ pausePlayback(); return; }
+
+    const elapsed = (performance.now() - state.sceneStartTime) / 1000;
+    const progress = Math.min(1, elapsed / scene.duration);
+    drawScene(scene, progress, !state.isUnlocked);
+
+    const elapsedGlobal = state.scenes.slice(0, state.currentSceneIdx).reduce((s,sc)=>s+sc.duration,0) + elapsed;
+    $("progressFill").style.width = Math.min(100,(elapsedGlobal/totalDuration())*100) + "%";
+    $("timeCurrent").textContent = fmtTime(elapsedGlobal);
+
+    if(progress >= 1){
+      if(state._singleSceneOnly || state.currentSceneIdx >= state.scenes.length - 1){
+        pausePlayback();
+        $("btnStop").disabled = false;
+        return;
+      }
+      state.currentSceneIdx++;
+      state.sceneStartTime = performance.now();
+      speakScene(state.scenes[state.currentSceneIdx]);
+      buildSceneStrip();
+    }
+    state.rafId = requestAnimationFrame(animateLoop);
+  }
+
+  /* ======================= EXPORT (VIDEO / SRT / TXT) ======================= */
+  function srtTimestamp(totalSec){
+    const ms = Math.round((totalSec % 1) * 1000);
+    const s = Math.floor(totalSec) % 60;
+    const m = Math.floor(totalSec/60) % 60;
+    const h = Math.floor(totalSec/3600);
+    const pad = (n,l)=> String(n).padStart(l,"0");
+    return pad(h,2)+":"+pad(m,2)+":"+pad(s,2)+","+pad(ms,3);
+  }
+
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=> URL.revokeObjectURL(url), 3000);
+  }
+
+  function exportSrt(){
+    const scenesToUse = state.isUnlocked ? state.scenes : state.scenes.slice(0, CONFIG.FREE_SCENE_LIMIT);
+    let t = 0, out = "";
+    scenesToUse.forEach((scene,i)=>{
+      const start = t, end = t + scene.duration;
+      out += (i+1) + "\n" + srtTimestamp(start) + " --> " + srtTimestamp(end) + "\n" + scene.narration + "\n\n";
+      t = end;
+    });
+    downloadBlob(new Blob([out], {type:"text/plain"}), "article-video-captions.srt");
+    toast("Captions (.srt) downloaded");
+  }
+
+  function exportScriptTxt(){
+    const scenesToUse = state.isUnlocked ? state.scenes : state.scenes.slice(0, CONFIG.FREE_SCENE_LIMIT);
+    let out = "ARTICLE TO VIDEO — SCRIPT\nGenerated by IncomeAIHub\n\n";
+    scenesToUse.forEach((scene,i)=>{
+      out += "SCENE " + (i+1) + " (" + scene.duration + "s) — Visual: " + scene.keyword + "\n" + scene.narration + "\n\n";
+    });
+    downloadBlob(new Blob([out], {type:"text/plain"}), "article-video-script.txt");
+    toast("Script (.txt) downloaded");
+  }
+
+  async function exportVideo(){
+    if(state.scenes.length === 0) return;
+    const scenesToUse = state.isUnlocked ? state.scenes : state.scenes.slice(0, CONFIG.FREE_SCENE_LIMIT);
+    const watermark = !state.isUnlocked;
+
+    $("btnExport").disabled = true;
+    $("genStatus").style.display = "flex";
+    $("genStatus").innerHTML = '<div class="spinner"></div> Recording video... please keep this tab open';
+
+    stopSpeaking();
+    state.isPlaying = false;
+    if(state.rafId) cancelAnimationFrame(state.rafId);
+
+    const stream = canvas.captureStream(30);
+    let mimeType = "video/webm;codecs=vp9";
+    if(!MediaRecorder.isTypeSupported(mimeType)) mimeType = "video/webm";
+    const recorder = new MediaRecorder(stream, { mimeType });
+    const chunks = [];
+    recorder.ondataavailable = (e)=>{ if(e.data.size > 0) chunks.push(e.data); };
+
+    const finished = new Promise(resolve=>{
+      recorder.onstop = ()=> resolve(new Blob(chunks, {type:"video/webm"}));
+    });
+
+    recorder.start();
+
+    for(let i=0; i<scenesToUse.length; i++){
+      const scene = scenesToUse[i];
+      const steps = Math.max(1, Math.round(scene.duration * 30));
+      for(let s=0; s<steps; s++){
+        const progress = s/steps;
+        drawScene(scene, progress, watermark);
+        await new Promise(r=>setTimeout(r, 1000/30));
+      }
+    }
+    drawScene(scenesToUse[scenesToUse.length-1], 1, watermark);
+    await new Promise(r=>setTimeout(r, 200));
+    recorder.stop();
+
+    const blob = await finished;
+    downloadBlob(blob, "article-video-" + Date.now() + ".webm");
+    $("genStatus").style.display = "none";
+    $("btnExport").disabled = false;
+    toast("Video exported successfully! 🎬");
+  }
+
+  /* ======================= GENERATE FLOW ======================= */
+  async function handleGenerate(){
+    const text = $("articleInput").value.trim();
+    if(text.split(/\s+/).length < 15){
+      toast("Please paste a longer article (at least ~15 words).", true);
+      return;
+    }
+    $("genStatus").style.display = "flex";
+    $("genStatus").innerHTML = '<div class="spinner"></div> Analyzing article & building scenes...';
+    $("btnGenerate").disabled = true;
+
+    await new Promise(r=>setTimeout(r, 500)); // UX pacing
+
+    const target = $("targetLength").value;
+    let scenes = generateScenesFromArticle(text, target);
+
+    if(!DEMO_MODE){
+      try{
+        const aiRes = await fetch(CONFIG.SUPABASE_URL + "/functions/v1/ai-proxy", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json", "Authorization":"Bearer " + CONFIG.SUPABASE_ANON_KEY },
+          body: JSON.stringify({
+            tool_id: CONFIG.TOOL_ID,
+            device_id: state.deviceId,
+            prompt: "Convert this article into a video script with " + scenes.length + " short punchy scenes for social media. For each scene return: narration text (1-2 sentences) and a one-word visual keyword. Article: " + text.slice(0,4000)
+          })
+        });
+        const aiData = await aiRes.json();
+        if(aiData && Array.isArray(aiData.scenes) && aiData.scenes.length){
+          scenes = aiData.scenes.map((s,i)=>{
+            const wc = (s.narration||"").split(/\s+/).length;
+            return {
+              id: i,
+              narration: s.narration || scenes[i]?.narration || "",
+              keyword: s.keyword || extractKeyword(s.narration||""),
+              duration: Math.min(12, Math.max(3, Math.round(wc/2.3))),
+              theme: state.theme === "mixed" ? MIXED_CYCLE[i % MIXED_CYCLE.length] : state.theme
+            };
+          });
+        }
+      }catch(e){ /* fall back silently to local heuristic scenes */ }
+    }
+
+    state.scenes = scenes;
+    state.currentSceneIdx = 0;
+
+    $("genStatus").style.display = "none";
+    $("btnGenerate").disabled = false;
+
+    if(scenes.length === 0){
+      toast("Could not generate scenes from this text. Try a longer article.", true);
+      return;
+    }
+
+    $("emptyState").style.display = "none";
+    $("btnPlay").disabled = false;
+    $("btnStop").disabled = false;
+    $("btnExport").disabled = false;
+    $("btnSrt").disabled = false;
+    $("btnScriptTxt").disabled = false;
+    $("timeTotal").textContent = fmtTime(totalDuration());
+
+    drawScene(scenes[0], 0, !state.isUnlocked);
+    buildSceneStrip();
+    renderScenesList();
+    toast(scenes.length + " scenes generated!");
+  }
+
+  /* ======================= MODALS ======================= */
+  function openModal(id){ $(id).classList.add("show"); }
+  function closeModal(id){ $(id).classList.remove("show"); }
+
+  /* ======================= VOICES ======================= */
+  function loadVoices(){
+    if(!("speechSynthesis" in window)) return;
+    state.voices = window.speechSynthesis.getVoices();
+    const sel = $("voiceSelect");
+    if(state.voices.length === 0) return;
+    sel.innerHTML = "";
+    const preferred = state.voices.filter(v => /en-IN|hi-IN/i.test(v.lang));
+    const rest = state.voices.filter(v => !/en-IN|hi-IN/i.test(v.lang));
+    [...preferred, ...rest].forEach(v=>{
+      const opt = document.createElement("option");
+      opt.value = v.name;
+      opt.textContent = v.name + " (" + v.lang + ")";
+      sel.appendChild(opt);
+    });
+  }
+
+  /* ======================= INIT / EVENTS ======================= */
+  function init(){
+    state.deviceId = getDeviceId();
+    setCanvasSize();
+    renderEmptyCanvas();
+    checkUnlockStatus();
+
+    if(DEMO_MODE) $("demoNote").style.display = "block"; else $("demoNote").style.display = "none";
+
+    if("speechSynthesis" in window){
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    $("articleInput").addEventListener("input", (e)=>{
+      const val = e.target.value;
+      $("charCount").textContent = val.length;
+      $("wordCount").textContent = val.trim() ? val.trim().split(/\s+/).length : 0;
+    });
+
+    $("btnGenerate").addEventListener("click", handleGenerate);
+
+    $("aspectRatio").addEventListener("change", (e)=>{
+      state.aspect = e.target.value;
+      setCanvasSize();
+      if(state.scenes.length) drawScene(state.scenes[state.currentSceneIdx], 0, !state.isUnlocked);
+      else renderEmptyCanvas();
+    });
+
+    document.querySelectorAll(".swatch").forEach(sw=>{
+      sw.addEventListener("click", ()=>{
+        document.querySelectorAll(".swatch").forEach(s=>s.classList.remove("active"));
+        sw.classList.add("active");
+        state.theme = sw.getAttribute("data-theme");
+        state.scenes.forEach((scene,i)=>{
+          scene.theme = state.theme === "mixed" ? MIXED_CYCLE[i % MIXED_CYCLE.length] : state.theme;
+        });
+        if(state.scenes.length) drawScene(state.scenes[state.currentSceneIdx], 0, !state.isUnlocked);
+        renderScenesList();
+      });
+    });
+
+    $("rateSlider").addEventListener("input", (e)=>{
+      $("rateVal").textContent = parseFloat(e.target.value).toFixed(2) + "x";
+    });
+
+    $("btnPlay").addEventListener("click", ()=> playFromScene(state.currentSceneIdx, false));
+    $("btnPause").addEventListener("click", pausePlayback);
+    $("btnStop").addEventListener("click", stopPlayback);
+
+    $("btnExport").addEventListener("click", exportVideo);
+    $("btnSrt").addEventListener("click", exportSrt);
+    $("btnScriptTxt").addEventListener("click", exportScriptTxt);
+
+    $("btnHindiGuide").addEventListener("click", ()=> openModal("guideModal"));
+    $("btnUnlockTop").addEventListener("click", ()=> openModal("unlockModal"));
+    $("btnUnlockInline").addEventListener("click", ()=> openModal("unlockModal"));
+    $("btnPay").addEventListener("click", startPayment);
+    document.querySelectorAll("[data-close]").forEach(btn=>{
+      btn.addEventListener("click", (e)=> closeModal(e.target.getAttribute("data-close")));
+    });
+    document.querySelectorAll(".modal-backdrop").forEach(mb=>{
+      mb.addEventListener("click",(e)=>{ if(e.target === mb) mb.classList.remove("show"); });
+    });
+
+    window.addEventListener("resize", ()=>{
+      if(state.scenes.length) drawScene(state.scenes[state.currentSceneIdx], 0, !state.isUnlocked);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+
+</body>
+</html>
